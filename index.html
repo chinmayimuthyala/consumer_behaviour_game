@@ -690,6 +690,41 @@
       line-height: 1.6;
       margin-bottom: 36px;
     }
+    .game-countdown {
+      position: absolute;
+      top: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      opacity: 0.85;
+      z-index: 20;
+      line-height: 1;
+      transition: color 0.3s;
+      pointer-events: none;
+    }
+    .game-countdown.urgent { color: hsl(0,65%,52%); }
+
+    .game-start-msg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      text-align: center;
+      white-space: nowrap;
+      z-index: 30;
+      opacity: 0;
+      transition: opacity 0.35s;
+      pointer-events: none;
+    }
+    .game-start-msg.show { opacity: 1; }
+
     .game-score {
       position: absolute;
       top: 36px;
@@ -791,7 +826,7 @@
     <div class="game-instructions-card">
       <p class="instr-eyebrow">Almost there</p>
       <h2>Okay, this is a game where you have to click on the glowing dots.</h2>
-      <p class="instr-sub">Let's see how many you can click in 30 seconds.</p>
+      <p class="instr-sub">Let's see how many you can click in 12 seconds.</p>
       <button class="btn-primary" onclick="beginGame()" style="max-width:220px;margin:0 auto;display:block;">I'm ready →</button>
     </div>
   </div>
@@ -802,7 +837,9 @@
       <div class="game-header">
         <p class="game-prompt">Click the dots!</p>
       </div>
+      <div class="game-countdown" id="game-countdown">12</div>
       <div class="game-score" id="game-score">0</div>
+      <div class="game-start-msg" id="game-start-msg">Game starts now!</div>
       <div class="game-name-display" id="game-name-display"></div>
       <div class="game-timer-bar" id="game-timer-bar" style="width:100%"></div>
     </div>
@@ -1182,6 +1219,7 @@ function pickAnswer(idx) {
 ═══════════════════════════════════════════════════ */
 let gameTimer = null;
 let circleTimer = null;
+let countdownInterval = null;
 let gameStartTime = 0;
 const GAME_DURATION = 12000;
 const CIRCLE_HUES = [0, 15, 30, 50, 70, 100, 140, 170, 195, 215, 240, 265, 285, 310, 330, 350];
@@ -1202,6 +1240,15 @@ function startGame() {
   nd.classList.remove('show');
   const sc = document.getElementById('game-score');
   if (sc) sc.textContent = '0';
+  const cd = document.getElementById('game-countdown');
+  if (cd) { cd.textContent = '12'; cd.classList.remove('urgent'); }
+
+  // Show "Game starts now!" briefly
+  const msg = document.getElementById('game-start-msg');
+  if (msg) {
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 1200);
+  }
 
   const container = document.getElementById('game-container');
   container.querySelectorAll('.circle').forEach(c => c.remove());
@@ -1209,6 +1256,17 @@ function startGame() {
   gameStartTime = Date.now();
   updateTimerBar();
   spawnCircle();
+
+  // Countdown ticker
+  let secsLeft = Math.ceil(GAME_DURATION / 1000);
+  countdownInterval = setInterval(() => {
+    secsLeft--;
+    if (cd) {
+      cd.textContent = Math.max(0, secsLeft);
+      cd.classList.toggle('urgent', secsLeft <= 3);
+    }
+    if (secsLeft <= 0) clearInterval(countdownInterval);
+  }, 1000);
 
   gameTimer = setTimeout(endGame, GAME_DURATION);
 }
@@ -1301,6 +1359,7 @@ function spawnCircle() {
 function endGame() {
   gameEnded = true;
   clearTimeout(circleTimer);
+  clearInterval(countdownInterval);
   Object.values(circles).forEach(clearTimeout);
   circles = {};
 
