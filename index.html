@@ -1183,8 +1183,8 @@ function pickAnswer(idx) {
 let gameTimer = null;
 let circleTimer = null;
 let gameStartTime = 0;
-const GAME_DURATION = 30000;
-const CIRCLE_HUES = [0, 25, 55, 120, 175, 210, 260, 300, 330];
+const GAME_DURATION = 12000;
+const CIRCLE_HUES = [0, 15, 30, 50, 70, 100, 140, 170, 195, 215, 240, 265, 285, 310, 330, 350];
 let circles = {};
 let circleId = 0;
 let gameEnded = false;
@@ -1293,8 +1293,8 @@ function spawnCircle() {
 
   const elapsed = Date.now() - gameStartTime;
   const progress = Math.min(elapsed / GAME_DURATION, 1);
-  const baseDelay = 900 - (progress * 580); // 900ms → 320ms over 30s
-  const nextDelay = Math.max(280, baseDelay + Math.random() * 180);
+  const baseDelay = 500 - (progress * 320); // 500ms → 180ms over 12s
+  const nextDelay = Math.max(160, baseDelay + Math.random() * 100);
   circleTimer = setTimeout(spawnCircle, nextDelay);
 }
 
