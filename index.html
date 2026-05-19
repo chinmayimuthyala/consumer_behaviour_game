@@ -807,7 +807,6 @@
       </div>
 
       <button class="btn-primary" onclick="startExperience()">Start Your Break</button>
-      <p class="caption">No account needed · Nothing is stored</p>
     </div>
   </div>
 
@@ -1367,7 +1366,7 @@ function endGame() {
   container.querySelectorAll('.circle').forEach(c => c.remove());
 
   const nd = document.getElementById('game-name-display');
-  nd.textContent = `Nice job, ${state.name}. You got ${state.game.hits}.`;
+  nd.textContent = `Nice job, ${state.name}. You got ${state.game.hits} dots out of ${state.game.totalSpawned}.`;
   nd.classList.add('show');
 
   const nj = document.getElementById('nice-job');
