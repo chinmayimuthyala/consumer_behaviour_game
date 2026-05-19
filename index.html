@@ -331,7 +331,7 @@
     }
     .game-header {
       position: absolute;
-      top: 36px;
+      top: 14px;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
@@ -339,10 +339,11 @@
       white-space: nowrap;
     }
     .game-header .game-prompt {
-      font-size: 18px;
-      font-weight: 400;
-      color: var(--text-soft);
-      letter-spacing: -0.01em;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
     .game-timer-bar {
       position: absolute;
@@ -355,9 +356,9 @@
     }
     .game-name-display {
       position: absolute;
-      top: 36px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       font-size: 22px;
       font-weight: 500;
       letter-spacing: -0.01em;
@@ -692,7 +693,7 @@
     }
     .game-countdown {
       position: absolute;
-      top: 28px;
+      top: 38px;
       left: 50%;
       transform: translateX(-50%);
       font-size: 52px;
@@ -873,13 +874,6 @@
   <div class="screen" id="final-screen">
     <div class="final-inner">
       <p class="final-question" id="final-q">WHERE, WHEN & HOW<br>is my data being collected?</p>
-      <p class="final-body" id="final-b">
-        This was a simple game. You answered five questions,<br>
-        tapped a few circles, and chose a color.<br><br>
-        Real systems have thousands of signals.<br>
-        And they never tell you they're watching.
-      </p>
-      <p class="movement-credit" id="final-c">What Do They Know · Movement for Digital Consent</p>
       <p class="restart-link" onclick="restartExperience()">← Start over</p>
     </div>
   </div>
