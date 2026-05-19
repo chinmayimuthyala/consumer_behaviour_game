@@ -211,10 +211,13 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      border: 2px solid rgba(0,0,0,0.08);
+      border: 2px dashed var(--border);
       flex-shrink: 0;
-      background: #6b8cba;
-      transition: background 0.2s;
+      background: transparent;
+      transition: background 0.2s, border 0.2s;
+    }
+    .color-swatch.chosen {
+      border: 2px solid rgba(0,0,0,0.08);
     }
     input[type="color"] {
       opacity: 0;
@@ -886,6 +889,7 @@
 const state = {
   name: '',
   color: '#6b8cba',
+  colorChosen: false,
   timeOfDay: '',
   answers: {},
   questionTimings: [],
@@ -1120,16 +1124,15 @@ function selectTimeOfDay(v) {
 
 document.getElementById('color-input').addEventListener('input', function() {
   state.color = this.value;
-  document.getElementById('color-swatch').style.background = this.value;
+  state.colorChosen = true;
+  const swatch = document.getElementById('color-swatch');
+  swatch.style.background = this.value;
+  swatch.classList.add('chosen');
   const name = colorName(this.value);
   state.colorLabel = name;
   document.getElementById('color-label-text').textContent = name;
   applyAccentColor(this.value);
 });
-
-// Init swatch
-document.getElementById('color-swatch').style.background = state.color;
-applyAccentColor(state.color);
 
 document.getElementById('name-input').addEventListener('input', function() {
   state.name = this.value.trim();
@@ -1141,6 +1144,13 @@ function startExperience() {
     document.getElementById('name-input').focus();
     document.getElementById('name-input').style.borderColor = 'hsl(0,60%,60%)';
     setTimeout(() => document.getElementById('name-input').style.borderColor = '', 1200);
+    return;
+  }
+  if (!state.colorChosen) {
+    const field = document.querySelector('.color-field');
+    field.style.borderColor = 'hsl(0,60%,60%)';
+    field.style.boxShadow = '0 0 0 3px hsl(0,60%,90%)';
+    setTimeout(() => { field.style.borderColor = ''; field.style.boxShadow = ''; }, 1400);
     return;
   }
   if (!state.timeOfDay) {
