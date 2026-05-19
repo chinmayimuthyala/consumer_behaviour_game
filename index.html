@@ -872,7 +872,7 @@
   <!-- FINAL -->
   <div class="screen" id="final-screen">
     <div class="final-inner">
-      <p class="final-question" id="final-q">"What do they know<br>about you?"</p>
+      <p class="final-question" id="final-q">Where, when, and how<br>is my data being extracted?</p>
       <p class="final-body" id="final-b">
         This was a simple game. You answered five questions,<br>
         tapped a few circles, and chose a color.<br><br>
@@ -1418,7 +1418,7 @@ function buildReveal() {
 }
 
 function runReveal() {
-  const delays = [0, 2200, 4200, 6100, 8100, 10200];
+  const delays = [0, 3000, 5800, 8500, 11200, 14200];
   REVEAL_LINES.forEach((_, i) => {
     setTimeout(() => {
       const el = document.getElementById('rl-' + i);
@@ -1430,7 +1430,7 @@ function runReveal() {
     buildProfile();
     showScreen('profile-screen');
     setTimeout(animateProfile, 400);
-  }, 13500);
+  }, 17500);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -1483,6 +1483,10 @@ function buildProfile() {
         </div>
       `).join('')}
     </div>
+
+    <div id="profile-next-wrap" style="opacity:0;transition:opacity 0.6s;margin-top:28px;text-align:center;">
+      <button onclick="showFinal()" style="padding:14px 36px;background:#fff;color:#0c0c0b;border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:-0.01em;">Continue →</button>
+    </div>
   `;
 }
 
@@ -1509,14 +1513,19 @@ function animateProfile() {
   }
 
   setTimeout(() => {
-    showScreen('final-screen');
-    setTimeout(animateFinal, 400);
-  }, 1600 + drCount*100 + 2800);
+    const wrap = document.getElementById('profile-next-wrap');
+    if (wrap) wrap.style.opacity = '1';
+  }, 1600 + drCount*100 + 800);
 }
 
 /* ═══════════════════════════════════════════════════
    FINAL
 ═══════════════════════════════════════════════════ */
+function showFinal() {
+  showScreen('final-screen');
+  setTimeout(animateFinal, 400);
+}
+
 function animateFinal() {
   stopAmbient();
   setTimeout(() => document.getElementById('final-q').classList.add('show'), 100);
